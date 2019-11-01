@@ -39,7 +39,7 @@ class Search extends Component {
                         name="text"
                         value={this.state.text}
                         onChange={this.onChange}
-                        placeholder="Search users..." />
+                        placeholder="Search" />
                     <input
                         type="submit"
                         value="Search"
