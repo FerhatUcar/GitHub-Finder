@@ -8,7 +8,9 @@ class Search extends Component {
 
     // type checking
     static propTypes = {
-        searchUsers: PropTypes.func.isRequired
+        searchUsers: PropTypes.func.isRequired,
+        clearUsers: PropTypes.func.isRequired,
+        setAlert: PropTypes.func.isRequired
     };
 
     // get the value from the input
@@ -17,11 +19,18 @@ class Search extends Component {
     // submit the current value
     onSubmit = (e): void => {
         e.preventDefault();
-        this.props.searchUsers(this.state.text);
-        this.setState({text: ''})
+
+        if (this.state.text === '') {
+            this.props.setAlert('Please enter text', 'danger');
+        } else {
+            this.props.searchUsers(this.state.text);
+            this.setState({text: ''})
+        }
     };
 
     render() {
+        const {showClear, clearUsers} = this.props;
+
         return (
             <div>
                 <form onSubmit={this.onSubmit} className="form">
@@ -36,6 +45,12 @@ class Search extends Component {
                         value="Search"
                         className="btn btn-dark btn-block"
                     />
+                    {showClear && (
+                        <button
+                            className="btn btn-light btn-block"
+                            onClick={clearUsers}
+                        >Clear</button>
+                    )}
                 </form>
             </div>
         );
