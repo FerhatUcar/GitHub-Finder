@@ -33,6 +33,10 @@ class Search extends Component {
 
         return (
             <div className="search__box">
+                <div className="card card__space">
+                    <h1>Search for Github users</h1>
+                    <p>Type the users name in the search box to get results</p>
+                </div>
                 <form onSubmit={this.onSubmit} className="form">
                     <input
                         type="text"

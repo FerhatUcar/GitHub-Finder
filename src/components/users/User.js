@@ -2,16 +2,20 @@ import React, {Component, Fragment} from 'react';
 import Spinner from "../layout/Spinner";
 import PropTypes from "prop-types";
 import {Link} from "react-router-dom";
+import Repos from "../repos/Repos";
 
 class User extends Component {
     componentDidMount(): void {
         this.props.getUser(this.props.match.params.login).then();
+        this.props.getUserRepos(this.props.match.params.login).then();
     }
 
     static propTypes = {
         loading: PropTypes.bool,
         user: PropTypes.object.isRequired,
-        getUser: PropTypes.func.isRequired
+        repos: PropTypes.array.isRequired,
+        getUser: PropTypes.func.isRequired,
+        getUserRepos: PropTypes.func.isRequired
     };
 
     render() {
@@ -22,6 +26,7 @@ class User extends Component {
             location,
             bio,
             blog,
+            email,
             login,
             html_url,
             followers,
@@ -31,7 +36,7 @@ class User extends Component {
             hireable
         } = this.props.user;
 
-        const {loading} = this.props;
+        const {loading ,repos} = this.props;
 
         // show loader if the data is not been fetched
         if (loading) return <Spinner/>;
@@ -39,13 +44,13 @@ class User extends Component {
         return (
             <Fragment>
                 <div className="card flex">
-                    <div className="all-center">
+                    <div className="all-center card__space">
                         <div>
                             <img
                                 src={avatar_url}
                                 alt={name}
                                 className="round-img"
-                                style={{width: "150px", marginRight: "1rem"}}
+                                style={{width: "75%"}}
                             />
                             <h1>{name}</h1>
                             <p>
@@ -67,7 +72,7 @@ class User extends Component {
                         </div>
                     </div>
                     <div className="line"/>
-                    <div>
+                    <div className="bio card__space">
                         {bio && (
                             <div className="my-1">
                                 <h2>Bio</h2>
@@ -77,6 +82,13 @@ class User extends Component {
 
                         <ul>
                             <h2>Info</h2>
+                            <li>
+                                {email &&
+                                    <Fragment>
+                                        <strong>Email:</strong> {email}
+                                    </Fragment>
+                                }
+                            </li>
                             <li>
                                 {blog &&
                                     <Fragment>
@@ -94,23 +106,32 @@ class User extends Component {
                                     </Fragment>
                                 }
                             </li>
+                            <li className="my-1">
+                                <div className="badge badge-primary">Followers: {followers}</div>
+                                <div className="badge badge-success">Following: {following}</div>
+                                <div className="badge badge-light">Public Repos: {public_repos}</div>
+                                <div className="badge badge-dark">Public Gists: {public_gists}</div>
+                            </li>
                         </ul>
 
-                        <p><strong>Followers:</strong> {followers}</p>
-                        <p><strong>Following:</strong> {following}</p>
-
-                        <p><strong>Public Repos:</strong> {public_repos}</p>
-                        <p><strong>Public Gists:</strong> {public_gists}</p>
+                        <h2>Repos</h2>
+                        <Repos repos={repos} />
 
                         <a href={html_url}
                            target="_blank"
                            className="btn btn-dark my-1"
                            rel="noopener noreferrer"
-                        >Visit Github profile</a>
+                        >
+                            <i className="fab fa-github" aria-hidden="true" /> {' '}
+                            Visit Github profile
+                        </a>
                     </div>
                 </div>
 
-                <Link to="/" className="btn btn-dark my-1">Back to search</Link>
+                <Link to="/" className="btn btn-dark my-1">
+                    <i className="fas fa-arrow-left" /> {' '}
+                    Back to search
+                </Link>
             </Fragment>
         );
     }
