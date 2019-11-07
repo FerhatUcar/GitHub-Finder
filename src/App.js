@@ -15,7 +15,7 @@ import GithubState from "./context/github/GithubState";
 import AlertState from "./context/alert/AlertState";
 
 // styling
-import './App.css';
+import './assets/App.scss';
 
 
 const App = () => {
